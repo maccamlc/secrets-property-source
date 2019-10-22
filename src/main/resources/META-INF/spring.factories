@@ -1,1 +1,5 @@
-org.springframework.boot.env.EnvironmentPostProcessor=de.ottonow.secretsmanager.propertysource.AwsSecretManagerPropertySourceEnvironmentPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.github.maccamlc.secrets.propertysource.aws.secretsmanager.AwsSecretsManagerPropertySourceEnvironmentPostProcessor,\
+  com.github.maccamlc.secrets.propertysource.aws.parameterstore.AwsParameterStorePropertySourceEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.github.maccamlc.secrets.propertysource.shared.PropertySourceAccessor

@@ -1,15 +1,15 @@
 buildscript {
     ext {
-        kotlinVersion = "1.3.11"
-        springBootVersion = "2.1.1.RELEASE"
-        awsSdkSecretsmanagerVersion = "1.11.475"
-        jacksonVersion = "2.9.8"
-        guavaVersion = "27.0.1-jre"
-        dokkaVersion = "0.9.17"
+        kotlinVersion = "1.3.50"
+        springBootVersion = "2.1.9.RELEASE"
+        springCloudVersion = "Greenwich.SR3"
+        dokkaVersion = "0.10.0"
 
         // Test
-        mockkVersion = "1.8.13"
-        junitVersion = "5.3.2"
+        mockkVersion = "1.9.3"
+        atriumVersion = "0.8.0"
+        junitExtensionVersion = "2.3.0"
+        testContainersVersion = "1.12.2"
     }
 
     repositories {
@@ -23,40 +23,49 @@ buildscript {
 
 plugins {
     // Use task dependencyUpdates to check for updates
-    id "com.github.ben-manes.versions" version "0.20.0"
+    id "com.github.ben-manes.versions" version "0.27.0"
+    id "org.jlleitschuh.gradle.ktlint" version "9.0.0"
 }
 
 apply plugin: "kotlin"
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-group = 'de.ottonow'
-archivesBaseName = 'aws-secrets-manager-property-source'
-version = '0.1.0'
+group = 'com.github.maccamlc'
+archivesBaseName = 'secrets-property-source'
+version = '0.2.0'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"))
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    compile "com.amazonaws:aws-java-sdk-secretsmanager:$awsSdkSecretsmanagerVersion"
-    compile "com.google.guava:guava:$guavaVersion"
-    compileOnly "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
-    compileOnly "org.springframework.boot:spring-boot-starter:$springBootVersion"
+    compile "com.amazonaws:aws-java-sdk-secretsmanager"
+    compile "com.amazonaws:aws-java-sdk-ssm"
+    compile "com.github.ben-manes.caffeine:caffeine"
+    compileOnly "com.fasterxml.jackson.core:jackson-databind"
+    compileOnly "org.springframework.boot:spring-boot-starter"
 
-    testCompile 'com.willowtreeapps.assertk:assertk-jvm:0.12'
+    testCompile "ch.tutteli.atrium:atrium-cc-en_GB-robstoll:$atriumVersion"
     testCompile "io.mockk:mockk:$mockkVersion"
-    testCompile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion") {
+    testCompile "io.github.glytching:junit-extensions:$junitExtensionVersion"
+    testCompile "org.testcontainers:localstack:$testContainersVersion"
+    testCompile "org.springframework.boot:spring-boot-starter-web"
+    testCompile("org.springframework.boot:spring-boot-starter-test") {
         exclude group: "junit", module: "junit"
         exclude group: "org.mockito", module: "mockito-core"
     }
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-params"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 }
 
 compileKotlin {
@@ -92,30 +101,28 @@ publishing {
             }
 
             pom {
-                name = 'aws-secrets-manager-property-source'
-                description = 'Kotlin library to resolve secrets in property files via AWS Secretsmanager in a Spring Boot application'
-                url = 'https://github.com/ottonow/aws-secrets-manager-property-source'
+                name = 'secrets-property-source'
+                description = 'Kotlin library to resolve secrets in property files via AWS Secretsmanager/Parameter Store in a Spring Boot application'
+                url = 'https://github.com/maccamlc/secrets-property-source'
                 licenses {
                     license {
                         name = 'Apache License 2.0'
-                        url = 'https://github.com/ottonow/aws-secrets-manager-property-source/blob/master/LICENSE'
+                        url = 'https://github.com/maccamlc/secrets-property-source/blob/master/LICENSE'
                     }
                 }
                 scm {
-                    url = 'https://github.com/ottonow/aws-secrets-manager-property-source'
-                    connection = 'scm:https://github.com/ottonow/aws-secrets-manager-property-source.git'
-                    developerConnection = 'scm:git://github.com/ottonow/aws-secrets-manager-property-source.git'
+                    url = 'https://github.com/maccamlc/secrets-property-source'
+                    connection = 'scm:https://github.com/maccamlc/secrets-property-source.git'
+                    developerConnection = 'scm:git://github.com/maccamlc/secrets-property-source.git'
                 }
                 developers {
                     developer {
-                        id = 'kevcodez'
-                        name = 'Kevin Grüneberg'
-                        email = 'k.grueneberg1994@gmail.com'
+                        id = 'maccamlc'
+                        name = 'Matthew McMahon'
+                        email = 'maccamlc@gmail.com'
                     }
                 }
             }
-
-
         }
     }
 
@@ -132,4 +139,9 @@ publishing {
 
 signing {
     sign publishing.publications.mavenJava
+}
+
+ktlint {
+    outputToConsole = true
+    ignoreFailures = false
 }
