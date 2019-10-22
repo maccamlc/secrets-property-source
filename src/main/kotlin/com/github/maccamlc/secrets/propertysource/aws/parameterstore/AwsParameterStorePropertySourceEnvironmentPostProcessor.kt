@@ -4,6 +4,8 @@ import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.github.maccamlc.secrets.propertysource.core.SecretsPropertySourceEnvironmentPostProcessor
 import com.github.maccamlc.secrets.propertysource.core.SecretsSource
 import com.github.maccamlc.secrets.propertysource.shared.PropertySourceAccessor
+import org.springframework.boot.SpringApplication
+import org.springframework.core.env.ConfigurableEnvironment
 
 internal class AwsParameterStorePropertySourceEnvironmentPostProcessor(
     override val secretsPropertySourceName: String = PROPERTY_STORE_PROPERTY_SOURCE_NAME,
@@ -13,8 +15,15 @@ internal class AwsParameterStorePropertySourceEnvironmentPostProcessor(
     override val secretsPrefix: String = PREFIX_SECRET
 ) : SecretsPropertySourceEnvironmentPostProcessor() {
 
-    companion object {
+    override fun postProcessEnvironment(environment: ConfigurableEnvironment, application: SpringApplication) {
+        if (!initialized) {
+            super.postProcessEnvironment(environment, application)
+            initialized = true
+        }
+    }
 
+    companion object {
+private var initialized = false
         private const val PROPERTY_STORE_PROPERTY_SOURCE_NAME = "AWSParameterStorePropertySource"
         private const val PREFIX_SECRET = "/aws-parameterstore/"
 

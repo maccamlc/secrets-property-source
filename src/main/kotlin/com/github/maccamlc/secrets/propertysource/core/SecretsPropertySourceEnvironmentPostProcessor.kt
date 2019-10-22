@@ -6,7 +6,7 @@ import org.springframework.core.env.ConfigurableEnvironment
 
 abstract class SecretsPropertySourceEnvironmentPostProcessor : EnvironmentPostProcessor {
 
-    final override fun postProcessEnvironment(environment: ConfigurableEnvironment, application: SpringApplication) =
+    override fun postProcessEnvironment(environment: ConfigurableEnvironment, application: SpringApplication) =
         SecretsPropertySource(
             name = secretsPropertySourceName,
             source = secretsSource,
