@@ -9,11 +9,11 @@ import com.amazonaws.services.simplesystemsmanagement.model.ParameterType
 import com.amazonaws.services.simplesystemsmanagement.model.PutParameterRequest
 import com.fasterxml.jackson.databind.ObjectMapper
 import kotlin.random.Random.Default.nextInt
+import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.testcontainers.containers.localstack.LocalStackContainer
 import org.testcontainers.containers.localstack.LocalStackContainer.Service
-import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils.randomAlphanumeric
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Configuration

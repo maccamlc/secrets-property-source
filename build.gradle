@@ -25,16 +25,16 @@ plugins {
     // Use task dependencyUpdates to check for updates
     id "com.github.ben-manes.versions" version "0.27.0"
     id "org.jlleitschuh.gradle.ktlint" version "9.0.0"
+    id 'io.codearte.nexus-staging' version '0.21.1'
 }
 
 apply plugin: "kotlin"
-apply plugin: "org.jlleitschuh.gradle.ktlint"
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group = 'com.github.maccamlc'
 archivesBaseName = 'secrets-property-source'
-version = '0.2.0'
+version = '0.1.0'
 
 repositories {
     mavenCentral()
@@ -45,24 +45,24 @@ dependencies {
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
     implementation(platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"))
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    compile "com.amazonaws:aws-java-sdk-secretsmanager"
-    compile "com.amazonaws:aws-java-sdk-ssm"
-    compile "com.github.ben-manes.caffeine:caffeine"
-    compileOnly "com.fasterxml.jackson.core:jackson-databind"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    implementation "com.amazonaws:aws-java-sdk-secretsmanager"
+    implementation "com.amazonaws:aws-java-sdk-ssm"
+    implementation "com.github.ben-manes.caffeine:caffeine"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
     compileOnly "org.springframework.boot:spring-boot-starter"
 
-    testCompile "ch.tutteli.atrium:atrium-cc-en_GB-robstoll:$atriumVersion"
-    testCompile "io.mockk:mockk:$mockkVersion"
-    testCompile "io.github.glytching:junit-extensions:$junitExtensionVersion"
-    testCompile "org.testcontainers:localstack:$testContainersVersion"
-    testCompile "org.springframework.boot:spring-boot-starter-web"
-    testCompile("org.springframework.boot:spring-boot-starter-test") {
+    testImplementation "ch.tutteli.atrium:atrium-cc-en_GB-robstoll:$atriumVersion"
+    testImplementation "io.mockk:mockk:$mockkVersion"
+    testImplementation "org.apache.commons:commons-lang3"
+    testImplementation "io.github.glytching:junit-extensions:$junitExtensionVersion"
+    testImplementation "org.testcontainers:localstack:$testContainersVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: "junit", module: "junit"
         exclude group: "org.mockito", module: "mockito-core"
     }
-
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-params"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
@@ -139,6 +139,10 @@ publishing {
 
 signing {
     sign publishing.publications.mavenJava
+}
+
+nexusStaging {
+    stagingProfileId = "8ee8ec27c8894"
 }
 
 ktlint {
