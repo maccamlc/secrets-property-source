@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.Ticker
 import com.github.maccamlc.secrets.propertysource.core.SecretsSource
-import com.github.maccamlc.secrets.propertysource.shared.PropertySourceAccessor
-import java.time.Duration
+import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceAccessor
 import org.slf4j.LoggerFactory
+import java.time.Duration
 
 internal class AwsSecretsManagerSource(
     internal val awsSecretsManagerSupplier: () -> AWSSecretsManager,
@@ -36,7 +36,7 @@ internal class AwsSecretsManagerSource(
                 when (propertyNameSplit.size) {
                     1 -> loadingCache.get(propertyName)
                     2 -> loadingCache.get(propertyNameSplit[0])
-                        ?.let { (PropertySourceAccessor.getObjectMapper() ?: defaultObjectMapper).readTree(it) }
+                        ?.let { (SecretsPropertySourceAccessor.objectMapper ?: defaultObjectMapper).readTree(it) }
                         ?.get(propertyNameSplit[1])
                         ?.let {
                             checkNotNull(

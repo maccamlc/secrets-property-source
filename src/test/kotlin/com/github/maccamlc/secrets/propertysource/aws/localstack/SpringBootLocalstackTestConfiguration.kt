@@ -8,19 +8,22 @@ import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.amazonaws.services.simplesystemsmanagement.model.ParameterType
 import com.amazonaws.services.simplesystemsmanagement.model.PutParameterRequest
 import com.fasterxml.jackson.databind.ObjectMapper
-import kotlin.random.Random.Default.nextInt
+import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceAccessor
 import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.testcontainers.containers.localstack.LocalStackContainer
 import org.testcontainers.containers.localstack.LocalStackContainer.Service
+import kotlin.random.Random.Default.nextInt
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Configuration
 internal open class SpringBootLocalstackTestConfiguration {
 
     @Bean
-    internal open fun objectMapper() = ObjectMapper()
+    internal open fun objectMapper() = ObjectMapper().also {
+        SecretsPropertySourceAccessor.objectMapper = it
+    }
 
     @Bean
     internal open fun localstackAmazonSecretsManager(
@@ -31,6 +34,9 @@ internal open class SpringBootLocalstackTestConfiguration {
             .withEndpointConfiguration(localStackContainer.getEndpointConfiguration(Service.SECRETSMANAGER))
             .withCredentials(localStackContainer.defaultCredentialsProvider)
             .build()
+            .also {
+                SecretsPropertySourceAccessor.awsSecretsManager = it
+            }
             .also {
                 it.putSecretValue(
                     PutSecretValueRequest().withSecretId(SECRET_ONE).withSecretString(
@@ -54,6 +60,9 @@ internal open class SpringBootLocalstackTestConfiguration {
             .withEndpointConfiguration(localStackContainer.getEndpointConfiguration(Service.SSM))
             .withCredentials(localStackContainer.defaultCredentialsProvider)
             .build()
+            .also {
+                SecretsPropertySourceAccessor.awsSimpleSystemsManagement = it
+            }
             .also {
                 it.putParameter(
                     PutParameterRequest().withName(SECRET_ONE).withValue(

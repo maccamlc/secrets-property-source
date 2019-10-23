@@ -3,12 +3,12 @@ package com.github.maccamlc.secrets.propertysource.aws.secretsmanager
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder
 import com.github.maccamlc.secrets.propertysource.core.SecretsPropertySourceEnvironmentPostProcessor
 import com.github.maccamlc.secrets.propertysource.core.SecretsSource
-import com.github.maccamlc.secrets.propertysource.shared.PropertySourceAccessor
+import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceAccessor
 
 internal class AwsSecretsManagerPropertySourceEnvironmentPostProcessor(
     override val secretsPropertySourceName: String = SECRETS_MANAGER_PROPERTY_SOURCE_NAME,
     override val secretsSource: SecretsSource = AwsSecretsManagerSource({
-        PropertySourceAccessor.getAwsSecretsManager() ?: defaultAwsSecretsManager
+        SecretsPropertySourceAccessor.awsSecretsManager ?: defaultAwsSecretsManager
     }),
     override val secretsPrefix: String = PREFIX_SECRET
 ) : SecretsPropertySourceEnvironmentPostProcessor() {
