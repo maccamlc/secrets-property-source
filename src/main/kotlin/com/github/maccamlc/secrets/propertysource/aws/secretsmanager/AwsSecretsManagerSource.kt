@@ -8,8 +8,8 @@ import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.Ticker
 import com.github.maccamlc.secrets.propertysource.core.SecretsSource
 import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceAccessor
-import org.slf4j.LoggerFactory
 import java.time.Duration
+import org.slf4j.LoggerFactory
 
 internal class AwsSecretsManagerSource(
     internal val awsSecretsManagerSupplier: () -> AWSSecretsManager,
