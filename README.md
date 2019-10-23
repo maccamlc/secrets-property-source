@@ -94,3 +94,45 @@ service:
 custom:
     json: ${/aws-secretsmanager/service/my-secrets}
 ```
+
+## SecretsPropertySourceAccessor usage
+
+Since the Property Sources can be loaded prior to bean initialization, by default new AWS clients will be created.
+
+However, there are a couple options to avoid this:
+
+* If retrieving properties programatically, such as `environment.getProperty(name)` then bean definitions will automatically
+be autowired if available.
+
+But for @Value resolution though, this approach will likely be too late. But you can manually set the values in SecretsPropertySourceAccessor
+prior to starting your application, for example:
+```
+ companion object {
+
+    init {
+        SecretsPropertySourceAccessor.objectMapper = JacksonConfig.objectMapper
+    }
+
+    @JvmStatic
+    fun main(args: Array<String>) {
+        runApplication<MyApplication>(*args)
+    }
+}
+```
+
+where JacksonConfig may look like:
+
+```
+@Configuration
+class JacksonConfig {
+
+    @Bean
+    internal fun objectMapper(): ObjectMapper = objectMapper
+
+    companion object {
+        internal val objectMapper by lazy { jacksonObjectMapper().findAndRegisterModules() }
+    }
+}
+```
+
+This approach would allow to use customised AWS clients or ObjectMapper for loading your properties
