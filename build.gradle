@@ -35,7 +35,7 @@ apply plugin: 'signing'
 
 group = 'com.github.maccamlc'
 archivesBaseName = 'secrets-property-source'
-version = '0.1.0'
+version = version
 
 repositories {
     mavenCentral()
@@ -152,3 +152,12 @@ ktlint {
 }
 
 afterReleaseBuild.dependsOn publish
+
+// Task to get current version of the project.
+task version(type: VersionTask)
+class VersionTask extends DefaultTask {
+    @TaskAction
+    def version() {
+        println project.version
+    }
+}
