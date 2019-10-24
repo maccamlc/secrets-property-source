@@ -7,7 +7,7 @@ import com.amazonaws.services.simplesystemsmanagement.model.ParameterVersionNotF
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.Ticker
 import com.github.maccamlc.secrets.propertysource.core.SecretsSource
-import java.time.Duration
+import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceConfiguration
 import org.slf4j.LoggerFactory
 
 internal class AwsParameterStoreSource(
@@ -17,7 +17,10 @@ internal class AwsParameterStoreSource(
 
     private val loadingCache = Caffeine.newBuilder()
         .ticker(ticker)
-        .expireAfterWrite(Duration.ofMinutes(1))
+        .also { builder ->
+            SecretsPropertySourceConfiguration.cacheExpiry
+                ?.run { builder.expireAfterWrite(this) }
+        }
         .build<String, String> { parameterName ->
             try {
                 GetParameterRequest().withName(parameterName).withWithDecryption(true)

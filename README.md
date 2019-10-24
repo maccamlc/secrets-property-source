@@ -36,8 +36,6 @@ For the property source to attempt resolving a property, the property name must 
 * AWS Secrets Manager: **/aws-secretsmanager/**
 * AWS Parameter Store: **/aws-parameterstore/**
 
-The secrets are cached for one minute.
-
 ###  Plain text Secrets Manager
 
 `${/aws-secretsmanager/<secret-name>}`
@@ -136,3 +134,21 @@ class JacksonConfig {
 ```
 
 This approach would allow to use customised AWS clients or ObjectMapper for loading your properties
+
+## Caching
+
+The secrets are cached for one minute by default, but can be configured (or disabled) before starting the application, for example:
+
+```
+ companion object {
+
+    init {
+        SecretsPropertySourceConfiguration.cacheExpiry = Duration.ofMinutes(5) // null would disable caching
+    }
+
+    @JvmStatic
+    fun main(args: Array<String>) {
+        runApplication<MyApplication>(*args)
+    }
+}
+```
