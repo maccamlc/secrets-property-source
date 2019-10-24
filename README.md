@@ -11,7 +11,7 @@ Artifacts are published to maven central.
 
 Gradle:
 
-`implementation "com.github.maccamlc:secrets-property-source:0.2.0"`
+`implementation "com.github.maccamlc:secrets-property-source:0.3.0"`
 
 Maven:
 
@@ -19,7 +19,7 @@ Maven:
 <dependency>
     <groupId>com.github.maccamlc</groupId>
     <artifactId>secrets-property-source</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
