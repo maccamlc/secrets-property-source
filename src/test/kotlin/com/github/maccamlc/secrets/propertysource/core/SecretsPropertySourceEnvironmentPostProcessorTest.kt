@@ -44,7 +44,7 @@ internal class SecretsPropertySourceEnvironmentPostProcessorTest {
     internal fun setup() {
         every { configurableEnvironment.propertySources } returns propertySource
 
-        secretsPropertySourceEnvironmentPostProcessor = object : SecretsPropertySourceEnvironmentPostProcessor() {
+        secretsPropertySourceEnvironmentPostProcessor = object : SecretsPropertySourceEnvironmentPostProcessor(true) {
             override val secretsPropertySourceName: String
                 get() = name
             override val secretsSource: SecretsSource
@@ -88,5 +88,27 @@ internal class SecretsPropertySourceEnvironmentPostProcessorTest {
                     property(subject::prefix).toBe(prefix)
                 }
             }
+    }
+
+    @Test
+    internal fun `should not add property source to beginning of environment when disabled`() {
+        val disabledSecretsPropertySourceEnvironmentPostProcessor =
+            object : SecretsPropertySourceEnvironmentPostProcessor(false) {
+                override val secretsPropertySourceName: String
+                    get() = name
+                override val secretsSource: SecretsSource
+                    get() = source
+                override val secretsPrefix: String
+                    get() = prefix
+            }
+
+        disabledSecretsPropertySourceEnvironmentPostProcessor.postProcessEnvironment(
+            configurableEnvironment,
+            springApplication
+        )
+
+        verify { configurableEnvironment wasNot Called }
+        verify { springApplication wasNot Called }
+        confirmVerified(configurableEnvironment, propertySource, springApplication)
     }
 }

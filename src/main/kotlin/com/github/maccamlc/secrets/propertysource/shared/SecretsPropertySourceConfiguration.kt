@@ -4,6 +4,10 @@ import java.time.Duration
 
 object SecretsPropertySourceConfiguration {
 
+    var awsSecretsManagerPropertySourceEnabled: Boolean = true
+
+    var awsParameterStorePropertySourceEnabled: Boolean = true
+
     /**
      * Configure how the Cache is used for retrieving external secrets
      *

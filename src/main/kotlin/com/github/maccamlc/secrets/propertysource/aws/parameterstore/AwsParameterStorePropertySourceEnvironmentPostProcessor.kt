@@ -4,6 +4,7 @@ import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.github.maccamlc.secrets.propertysource.core.SecretsPropertySourceEnvironmentPostProcessor
 import com.github.maccamlc.secrets.propertysource.core.SecretsSource
 import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceAccessor
+import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceConfiguration
 
 internal class AwsParameterStorePropertySourceEnvironmentPostProcessor(
     override val secretsPropertySourceName: String = PROPERTY_STORE_PROPERTY_SOURCE_NAME,
@@ -11,7 +12,7 @@ internal class AwsParameterStorePropertySourceEnvironmentPostProcessor(
         SecretsPropertySourceAccessor.awsSimpleSystemsManagement ?: defaultAwsSsm
     }),
     override val secretsPrefix: String = PREFIX_SECRET
-) : SecretsPropertySourceEnvironmentPostProcessor() {
+) : SecretsPropertySourceEnvironmentPostProcessor(SecretsPropertySourceConfiguration.awsParameterStorePropertySourceEnabled) {
 
     companion object {
 
