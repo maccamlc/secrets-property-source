@@ -5,11 +5,14 @@ import com.github.maccamlc.secrets.propertysource.core.SecretsPropertySourceEnvi
 import com.github.maccamlc.secrets.propertysource.core.SecretsSource
 import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceAccessor
 import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceConfiguration
+import org.springframework.core.Ordered
 
 internal class AwsSecretsManagerPropertySourceEnvironmentPostProcessor(
     override val secretsPropertySourceName: String = SECRETS_MANAGER_PROPERTY_SOURCE_NAME,
     override val secretsPrefix: String = PREFIX_SECRET
 ) : SecretsPropertySourceEnvironmentPostProcessor(SecretsPropertySourceConfiguration.awsSecretsManagerPropertySourceEnabled) {
+
+    override fun getOrder(): Int = ORDER
 
     private val defaultAwsSecretsManager by lazy {
         AWSSecretsManagerClientBuilder.defaultClient()
@@ -23,5 +26,7 @@ internal class AwsSecretsManagerPropertySourceEnvironmentPostProcessor(
 
         private const val SECRETS_MANAGER_PROPERTY_SOURCE_NAME = "AWSSecretsManagerPropertySource"
         private const val PREFIX_SECRET = "/aws-secretsmanager/"
+
+        const val ORDER = Ordered.HIGHEST_PRECEDENCE + 10
     }
 }
