@@ -8,19 +8,20 @@ import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceCo
 
 internal class AwsSecretsManagerPropertySourceEnvironmentPostProcessor(
     override val secretsPropertySourceName: String = SECRETS_MANAGER_PROPERTY_SOURCE_NAME,
-    override val secretsSource: SecretsSource = AwsSecretsManagerSource({
-        SecretsPropertySourceAccessor.awsSecretsManager ?: defaultAwsSecretsManager
-    }),
     override val secretsPrefix: String = PREFIX_SECRET
 ) : SecretsPropertySourceEnvironmentPostProcessor(SecretsPropertySourceConfiguration.awsSecretsManagerPropertySourceEnabled) {
+
+    private val defaultAwsSecretsManager by lazy {
+        AWSSecretsManagerClientBuilder.defaultClient()
+    }
+
+    override val secretsSource: SecretsSource = AwsSecretsManagerSource({
+        SecretsPropertySourceAccessor.awsSecretsManager ?: defaultAwsSecretsManager
+    })
 
     companion object {
 
         private const val SECRETS_MANAGER_PROPERTY_SOURCE_NAME = "AWSSecretsManagerPropertySource"
         private const val PREFIX_SECRET = "/aws-secretsmanager/"
-
-        private val defaultAwsSecretsManager by lazy {
-            AWSSecretsManagerClientBuilder.defaultClient()
-        }
     }
 }

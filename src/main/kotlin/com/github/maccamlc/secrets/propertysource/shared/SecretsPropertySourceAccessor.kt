@@ -3,16 +3,14 @@ package com.github.maccamlc.secrets.propertysource.shared
 import com.amazonaws.services.secretsmanager.AWSSecretsManager
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.util.concurrent.atomic.AtomicReference
-import javax.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
+import java.util.concurrent.atomic.AtomicReference
+import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 
 @Configuration
 open class SecretsPropertySourceAccessor {
-
-    @PostConstruct
-    private fun postConstruct() = REFERENCE.set(this)
 
     @Autowired(required = false)
     private var awsSecretManager: AWSSecretsManager? = null
@@ -22,6 +20,12 @@ open class SecretsPropertySourceAccessor {
 
     @Autowired(required = false)
     private var objectMapper: ObjectMapper? = null
+
+    @PostConstruct
+    private fun postConstruct() = REFERENCE.set(this)
+
+    @PreDestroy
+    private fun preDestroy() = REFERENCE.set(null)
 
     companion object {
         private val REFERENCE: AtomicReference<SecretsPropertySourceAccessor> = AtomicReference()

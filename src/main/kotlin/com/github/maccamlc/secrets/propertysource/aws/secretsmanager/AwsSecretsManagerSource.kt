@@ -16,6 +16,8 @@ internal class AwsSecretsManagerSource(
     ticker: Ticker = Ticker.systemTicker()
 ) : SecretsSource {
 
+    private val defaultObjectMapper by lazy { ObjectMapper() }
+
     private val loadingCache = Caffeine.newBuilder()
         .ticker(ticker)
         .also { builder ->
@@ -55,6 +57,5 @@ internal class AwsSecretsManagerSource(
         private const val SEPARATOR_JSON_PROPERTY_NAME = "."
 
         private val logger = LoggerFactory.getLogger(AwsSecretsManagerSource::class.java)
-        private val defaultObjectMapper by lazy { ObjectMapper() }
     }
 }
