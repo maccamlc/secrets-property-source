@@ -7,7 +7,7 @@ import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceAc
 import com.github.maccamlc.secrets.propertysource.shared.SecretsPropertySourceConfiguration
 import org.springframework.core.Ordered
 
-internal class AwsParameterStorePropertySourceEnvironmentPostProcessor(
+class AwsParameterStorePropertySourceEnvironmentPostProcessor(
     override val secretsPropertySourceName: String = PROPERTY_STORE_PROPERTY_SOURCE_NAME,
     override val secretsPrefix: String = PREFIX_SECRET
 ) : SecretsPropertySourceEnvironmentPostProcessor(SecretsPropertySourceConfiguration.awsParameterStorePropertySourceEnabled) {
@@ -24,9 +24,8 @@ internal class AwsParameterStorePropertySourceEnvironmentPostProcessor(
 
     companion object {
 
-        private const val PROPERTY_STORE_PROPERTY_SOURCE_NAME = "AWSParameterStorePropertySource"
-        private const val PREFIX_SECRET = "/aws-parameterstore/"
-
+        const val PROPERTY_STORE_PROPERTY_SOURCE_NAME = "AWSParameterStorePropertySource"
+        const val PREFIX_SECRET = "/aws-parameterstore/"
         const val ORDER = Ordered.HIGHEST_PRECEDENCE + 10
     }
 }
