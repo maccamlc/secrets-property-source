@@ -20,6 +20,8 @@ abstract class SecretsPropertySourceEnvironmentPostProcessor(private val enabled
         }
     }
 
+    override fun getOrder(): Int = Ordered.HIGHEST_PRECEDENCE + 100
+
     abstract val secretsPropertySourceName: String
 
     abstract val secretsSource: SecretsSource

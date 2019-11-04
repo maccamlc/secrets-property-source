@@ -45,6 +45,7 @@ internal class SecretsPropertySourceEnvironmentPostProcessorTest {
         every { configurableEnvironment.propertySources } returns propertySource
 
         secretsPropertySourceEnvironmentPostProcessor = object : SecretsPropertySourceEnvironmentPostProcessor(true) {
+            override fun getOrder(): Int = 6
             override val secretsPropertySourceName: String
                 get() = name
             override val secretsSource: SecretsSource
@@ -94,6 +95,7 @@ internal class SecretsPropertySourceEnvironmentPostProcessorTest {
     internal fun `should not add property source to beginning of environment when disabled`() {
         val disabledSecretsPropertySourceEnvironmentPostProcessor =
             object : SecretsPropertySourceEnvironmentPostProcessor(false) {
+                override fun getOrder(): Int = 5
                 override val secretsPropertySourceName: String
                     get() = name
                 override val secretsSource: SecretsSource
