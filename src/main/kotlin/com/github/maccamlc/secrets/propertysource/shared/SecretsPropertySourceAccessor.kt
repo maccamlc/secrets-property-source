@@ -3,11 +3,11 @@ package com.github.maccamlc.secrets.propertysource.shared
 import com.amazonaws.services.secretsmanager.AWSSecretsManager
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Configuration
 import java.util.concurrent.atomic.AtomicReference
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Configuration
 
 @Configuration
 open class SecretsPropertySourceAccessor {
