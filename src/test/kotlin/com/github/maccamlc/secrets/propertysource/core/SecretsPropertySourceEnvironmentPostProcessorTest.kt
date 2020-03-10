@@ -1,11 +1,10 @@
 package com.github.maccamlc.secrets.propertysource.core
 
-import ch.tutteli.atrium.api.cc.en_GB.containsExactly
-import ch.tutteli.atrium.api.cc.en_GB.isA
-import ch.tutteli.atrium.api.cc.en_GB.property
-import ch.tutteli.atrium.api.cc.en_GB.returnValueOf
-import ch.tutteli.atrium.api.cc.en_GB.toBe
-import ch.tutteli.atrium.verbs.assertThat
+import ch.tutteli.atrium.api.fluent.en_GB.containsExactly
+import ch.tutteli.atrium.api.fluent.en_GB.feature
+import ch.tutteli.atrium.api.fluent.en_GB.isA
+import ch.tutteli.atrium.api.fluent.en_GB.toBe
+import ch.tutteli.atrium.api.verbs.assertThat
 import io.github.glytching.junit.extension.random.Random
 import io.github.glytching.junit.extension.random.RandomBeansExtension
 import io.mockk.Called
@@ -84,9 +83,9 @@ internal class SecretsPropertySourceEnvironmentPostProcessorTest {
         assertThat(propertySourceList)
             .containsExactly {
                 isA<SecretsPropertySource> {
-                    returnValueOf(subject::getSource).toBe(source)
-                    returnValueOf(subject::getName).toBe(name)
-                    property(subject::prefix).toBe(prefix)
+                    feature { f(it::getSource) }.toBe(source)
+                    feature { f(it::getName) }.toBe(name)
+                    feature { p(it::prefix) }.toBe(prefix)
                 }
             }
     }

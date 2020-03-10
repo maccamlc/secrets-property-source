@@ -1,10 +1,10 @@
 package com.github.maccamlc.secrets.propertysource.aws.parameterstore
 
-import ch.tutteli.atrium.api.cc.en_GB.messageContains
-import ch.tutteli.atrium.api.cc.en_GB.notToBeNull
-import ch.tutteli.atrium.api.cc.en_GB.toBe
-import ch.tutteli.atrium.api.cc.en_GB.toThrow
-import ch.tutteli.atrium.verbs.assertThat
+import ch.tutteli.atrium.api.fluent.en_GB.messageContains
+import ch.tutteli.atrium.api.fluent.en_GB.notToBeNull
+import ch.tutteli.atrium.api.fluent.en_GB.toBe
+import ch.tutteli.atrium.api.fluent.en_GB.toThrow
+import ch.tutteli.atrium.api.verbs.assertThat
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest
 import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult

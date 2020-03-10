@@ -28,7 +28,7 @@ internal class SpringBootLocalstackTestContainerInitializer :
 
     companion object {
 
-        private const val LOCALSTACK_IMAGE_TAG = "0.10.4"
+        private const val LOCALSTACK_IMAGE_TAG = "0.10.8"
 
         private val LOCALSTACK =
             LocalStackContainer(LOCALSTACK_IMAGE_TAG).withServices(Service.SSM, Service.SECRETSMANAGER)

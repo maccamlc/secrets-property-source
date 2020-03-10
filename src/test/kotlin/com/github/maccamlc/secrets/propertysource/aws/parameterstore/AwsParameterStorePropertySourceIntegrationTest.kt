@@ -1,8 +1,8 @@
 package com.github.maccamlc.secrets.propertysource.aws.parameterstore
 
-import ch.tutteli.atrium.api.cc.en_GB.returnValueOf
-import ch.tutteli.atrium.api.cc.en_GB.toBe
-import ch.tutteli.atrium.verbs.assertThat
+import ch.tutteli.atrium.api.fluent.en_GB.feature
+import ch.tutteli.atrium.api.fluent.en_GB.toBe
+import ch.tutteli.atrium.api.verbs.assertThat
 import com.github.maccamlc.secrets.propertysource.aws.localstack.SpringBootLocalstackIntegrationTest
 import com.github.maccamlc.secrets.propertysource.aws.localstack.SpringBootLocalstackTestConfiguration
 import org.junit.jupiter.api.Test
@@ -26,8 +26,8 @@ internal class AwsParameterStorePropertySourceIntegrationTest {
             )
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.OK)
-            returnValueOf(subject::getBody).toBe(SpringBootLocalstackTestConfiguration.parameterValueOne)
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.OK)
+            feature { f(it::getBody) }.toBe(SpringBootLocalstackTestConfiguration.parameterValueOne)
         }
     }
 
@@ -41,8 +41,8 @@ internal class AwsParameterStorePropertySourceIntegrationTest {
             )
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.OK)
-            returnValueOf(subject::getBody).toBe(SpringBootLocalstackTestConfiguration.parameterValueTwo)
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.OK)
+            feature { f(it::getBody) }.toBe(SpringBootLocalstackTestConfiguration.parameterValueTwo)
         }
     }
 
@@ -55,8 +55,8 @@ internal class AwsParameterStorePropertySourceIntegrationTest {
         )
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.OK)
-            returnValueOf(subject::getBody).toBe(SpringBootLocalstackTestConfiguration.standard)
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.OK)
+            feature { f(it::getBody) }.toBe(SpringBootLocalstackTestConfiguration.standard)
         }
     }
 
@@ -66,7 +66,7 @@ internal class AwsParameterStorePropertySourceIntegrationTest {
             testRestTemplate.getForEntity("/property?name={name}", String::class.java, mapOf("name" to "unknown.value"))
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.NO_CONTENT)
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.NO_CONTENT)
         }
     }
 }

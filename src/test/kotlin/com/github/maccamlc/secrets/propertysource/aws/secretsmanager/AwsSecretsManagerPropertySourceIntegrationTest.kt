@@ -1,8 +1,8 @@
 package com.github.maccamlc.secrets.propertysource.aws.secretsmanager
 
-import ch.tutteli.atrium.api.cc.en_GB.returnValueOf
-import ch.tutteli.atrium.api.cc.en_GB.toBe
-import ch.tutteli.atrium.verbs.assertThat
+import ch.tutteli.atrium.api.fluent.en_GB.feature
+import ch.tutteli.atrium.api.fluent.en_GB.toBe
+import ch.tutteli.atrium.api.verbs.assertThat
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.maccamlc.secrets.propertysource.aws.localstack.SpringBootLocalstackIntegrationTest
 import com.github.maccamlc.secrets.propertysource.aws.localstack.SpringBootLocalstackTestConfiguration
@@ -27,8 +27,8 @@ internal class AwsSecretsManagerPropertySourceIntegrationTest {
             )
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.OK)
-            returnValueOf(subject::getBody).toBe(
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.OK)
+            feature { f(it::getBody) }.toBe(
                 objectMapper.writeValueAsString(
                     mapOf(
                         SpringBootLocalstackTestConfiguration.secretKeyOne_1 to SpringBootLocalstackTestConfiguration.secretValueOne_1,
@@ -49,8 +49,8 @@ internal class AwsSecretsManagerPropertySourceIntegrationTest {
             )
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.OK)
-            returnValueOf(subject::getBody).toBe(SpringBootLocalstackTestConfiguration.secretValueOne_1)
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.OK)
+            feature { f(it::getBody) }.toBe(SpringBootLocalstackTestConfiguration.secretValueOne_1)
         }
     }
 
@@ -64,8 +64,8 @@ internal class AwsSecretsManagerPropertySourceIntegrationTest {
             )
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.OK)
-            returnValueOf(subject::getBody).toBe(SpringBootLocalstackTestConfiguration.secretValueTwo)
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.OK)
+            feature { f(it::getBody) }.toBe(SpringBootLocalstackTestConfiguration.secretValueTwo)
         }
     }
 
@@ -79,8 +79,8 @@ internal class AwsSecretsManagerPropertySourceIntegrationTest {
             )
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.OK)
-            returnValueOf(subject::getBody).toBe(
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.OK)
+            feature { f(it::getBody) }.toBe(
                 objectMapper.writeValueAsString(
                     mapOf(SpringBootLocalstackTestConfiguration.secretKeyTwo to SpringBootLocalstackTestConfiguration.secretValueTwo)
                 )
@@ -97,8 +97,8 @@ internal class AwsSecretsManagerPropertySourceIntegrationTest {
         )
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.OK)
-            returnValueOf(subject::getBody).toBe(SpringBootLocalstackTestConfiguration.standard)
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.OK)
+            feature { f(it::getBody) }.toBe(SpringBootLocalstackTestConfiguration.standard)
         }
     }
 
@@ -108,7 +108,7 @@ internal class AwsSecretsManagerPropertySourceIntegrationTest {
             testRestTemplate.getForEntity("/property?name={name}", String::class.java, mapOf("name" to "unknown.value"))
 
         assertThat(response) {
-            returnValueOf(subject::getStatusCode).toBe(HttpStatus.NO_CONTENT)
+            feature { f(it::getStatusCode) }.toBe(HttpStatus.NO_CONTENT)
         }
     }
 }

@@ -1,11 +1,10 @@
 package com.github.maccamlc.secrets.propertysource.aws.parameterstore
 
-import ch.tutteli.atrium.api.cc.en_GB.contains
-import ch.tutteli.atrium.api.cc.en_GB.isA
-import ch.tutteli.atrium.api.cc.en_GB.property
-import ch.tutteli.atrium.api.cc.en_GB.returnValueOf
-import ch.tutteli.atrium.api.cc.en_GB.toBe
-import ch.tutteli.atrium.verbs.assertThat
+import ch.tutteli.atrium.api.fluent.en_GB.contains
+import ch.tutteli.atrium.api.fluent.en_GB.feature
+import ch.tutteli.atrium.api.fluent.en_GB.isA
+import ch.tutteli.atrium.api.fluent.en_GB.toBe
+import ch.tutteli.atrium.api.verbs.assertThat
 import io.mockk.Called
 import io.mockk.confirmVerified
 import io.mockk.every
@@ -47,9 +46,9 @@ internal class AwsParameterStorePropertySourceEnvironmentPostProcessorTest {
     @Test
     internal fun `should have expected source that provides AWS Parameter Store`() {
         assertThat(secretsPropertySourceEnvironmentPostProcessor.secretsSource).isA<AwsParameterStoreSource> {
-            property(subject::awsSimpleSystemsManagementSupplier) {
-                returnValueOf(subject::invoke) {
-                    returnValueOf(subject::toString).contains("com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClient")
+            feature({ p(it::awsSimpleSystemsManagementSupplier) }) {
+                feature({ f(it::invoke) }) {
+                    feature { f(it::toString) }.contains("com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClient")
                 }
             }
         }
@@ -64,7 +63,7 @@ internal class AwsParameterStorePropertySourceEnvironmentPostProcessorTest {
         confirmVerified(configurableEnvironment, springApplication)
 
         assertThat(propertySource) {
-            returnValueOf(subject::size).toBe(1)
+            feature { f(it::size) }.toBe(1)
         }
     }
 }
