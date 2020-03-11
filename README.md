@@ -19,7 +19,7 @@ Maven:
 <dependency>
     <groupId>com.github.maccamlc</groupId>
     <artifactId>secrets-property-source</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
 </dependency>
 ```
 
